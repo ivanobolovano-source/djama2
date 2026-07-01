@@ -839,7 +839,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
     <a href="#" class="footer__logo" aria-label="JAMALDIN — наверх">JAMALDIN</a>
 
     <nav class="footer__links" aria-label="Навигация подвала">
-      <a href="https://t.me/username" target="_blank" rel="noopener">Telegram · @username</a>
+      <a href="https://t.me/djammal11" target="_blank" rel="noopener">Telegram · @djammal11</a>
       <a href="https://wa.me/username" target="_blank" rel="noopener">WhatsApp · @username</a>
       <a href="https://instagram.com/username" target="_blank" rel="noopener">Instagram · @username</a>
     </nav>
@@ -953,14 +953,14 @@ window.addEventListener('load', () => {
 });
 
 // ================================================================
-// CTA FORM STUB
+// CTA FORM — редирект в Telegram с готовым текстом заявки
 // ================================================================
 function handleSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('cta-name').value.trim();
   const contact = document.getElementById('cta-contact').value.trim();
-  alert(`${name ? name + ', спасибо' : 'Спасибо'} за заявку! Свяжусь с вами по контакту: ${contact || 'указанному в форме'}.`);
-  e.target.reset();
+  const message = `Заявка с сайта JAMALDIN\nИмя: ${name}\nКонтакт: ${contact}`;
+  window.location.href = `https://t.me/djammal11?text=${encodeURIComponent(message)}`;
 }
 </script>
 </body>
