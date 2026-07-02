@@ -824,7 +824,10 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
           <input type="text" id="cta-contact" name="contact" placeholder="@username или номер" autocomplete="tel" required>
         </div>
       </div>
-      <button type="submit" class="btn btn-p">Оставить заявку</button>
+      <div class="cta__row">
+        <button type="submit" name="channel" value="telegram" class="btn btn-p">Написать в Telegram</button>
+        <button type="submit" name="channel" value="whatsapp" class="btn btn-s">Написать в WhatsApp</button>
+      </div>
     </form>
   </div>
 </section>
@@ -840,7 +843,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
 
     <nav class="footer__links" aria-label="Навигация подвала">
       <a href="https://t.me/djammal11" target="_blank" rel="noopener">Telegram · @djammal11</a>
-      <a href="https://wa.me/username" target="_blank" rel="noopener">WhatsApp · @username</a>
+      <a href="https://wa.me/79289734101" target="_blank" rel="noopener">WhatsApp · +7 928 973-41-01</a>
       <a href="https://instagram.com/username" target="_blank" rel="noopener">Instagram · @username</a>
     </nav>
 
@@ -953,14 +956,18 @@ window.addEventListener('load', () => {
 });
 
 // ================================================================
-// CTA FORM — редирект в Telegram с готовым текстом заявки
+// CTA FORM — редирект в Telegram или WhatsApp с готовым текстом заявки
 // ================================================================
 function handleSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('cta-name').value.trim();
   const contact = document.getElementById('cta-contact').value.trim();
   const message = `Заявка с сайта JAMALDIN\nИмя: ${name}\nКонтакт: ${contact}`;
-  window.location.href = `https://t.me/djammal11?text=${encodeURIComponent(message)}`;
+  const channel = e.submitter ? e.submitter.value : 'telegram';
+  const url = channel === 'whatsapp'
+    ? `https://wa.me/79289734101?text=${encodeURIComponent(message)}`
+    : `https://t.me/djammal11?text=${encodeURIComponent(message)}`;
+  window.location.href = url;
 }
 </script>
 </body>
