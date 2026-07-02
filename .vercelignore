@@ -3,6 +3,4 @@ STARTUP-KIT.md
 vault/
 чеклист/
 видео/
-
-.vercel
-.env*
+.git/
