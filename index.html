@@ -418,6 +418,11 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
 .cta__field input::placeholder { color: var(--text-muted); }
 .cta__field input:focus { border-color: var(--accent-cyan); }
 .cta__form .btn { margin-top: 6px; }
+.cta__plan-note {
+  font-family: var(--f-mono); font-size: .78rem; letter-spacing: .06em;
+  color: var(--accent-cyan); border: 1px solid var(--stroke); background: rgba(0,217,255,.06);
+  border-radius: 8px; padding: 10px 14px;
+}
 @media (max-width: 560px) { .cta__row { grid-template-columns: 1fr; } }
 
 /* ================================================================
@@ -617,7 +622,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
           <li><span class="svc__check">✓</span>Структура под заявки</li>
           <li><span class="svc__check">✓</span>Сопровождение после сдачи</li>
         </ul>
-        <a href="#cta" class="btn btn-s">Обсудить сайт</a>
+        <a href="#cta" class="btn btn-s" onclick="selectPlan(this)" data-plan="Сайт" data-price="от 40 000 ₽">Обсудить сайт</a>
       </article>
 
       <article class="svc__card glass rv" style="transition-delay:.08s">
@@ -633,7 +638,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
           <li><span class="svc__check">✓</span>Сильные крючки и структура</li>
           <li><span class="svc__check">✓</span>Готово к съёмке</li>
         </ul>
-        <a href="#cta" class="btn btn-s">Заказать сценарии</a>
+        <a href="#cta" class="btn btn-s" onclick="selectPlan(this)" data-plan="Сценарии для Reels" data-price="9 500 ₽">Заказать сценарии</a>
       </article>
 
       <article class="svc__card glass rv" style="transition-delay:.16s">
@@ -649,7 +654,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
           <li><span class="svc__check">✓</span>Субтитры и акценты</li>
           <li><span class="svc__check">✓</span>Единый премиальный стиль</li>
         </ul>
-        <a href="#cta" class="btn btn-s">Заказать монтаж</a>
+        <a href="#cta" class="btn btn-s" onclick="selectPlan(this)" data-plan="Монтаж Reels" data-price="9 500 ₽">Заказать монтаж</a>
       </article>
 
       <article class="svc__card svc__card--featured glass rv" style="transition-delay:.24s">
@@ -666,7 +671,7 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
           <li><span class="svc__check">✓</span>Контент-система на месяц</li>
           <li><span class="svc__check">✓</span>Один ответственный за результат</li>
         </ul>
-        <a href="#cta" class="btn btn-p">Взять пакет</a>
+        <a href="#cta" class="btn btn-p" onclick="selectPlan(this)" data-plan="Пакет «Reels под ключ»" data-price="13 800 ₽">Взять пакет</a>
       </article>
     </div>
   </div>
@@ -814,6 +819,8 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; color: var(--text-
     </div>
 
     <form class="cta__form glass rv" style="padding:28px; transition-delay:.1s;" onsubmit="handleSubmit(event)" aria-label="Заявка на проект">
+      <p class="cta__plan-note" id="cta-plan-note" style="display:none;"></p>
+      <input type="hidden" id="cta-plan" name="plan" value="">
       <div class="cta__row">
         <div class="cta__field">
           <label for="cta-name">Имя</label>
@@ -956,13 +963,25 @@ window.addEventListener('load', () => {
 });
 
 // ================================================================
+// ВЫБОР ТАРИФА (кнопки карточек услуг) — запоминаем и показываем в форме
+// ================================================================
+function selectPlan(el) {
+  const plan = `${el.dataset.plan} — ${el.dataset.price}`;
+  document.getElementById('cta-plan').value = plan;
+  const note = document.getElementById('cta-plan-note');
+  note.textContent = `Выбрано: ${plan}`;
+  note.style.display = 'block';
+}
+
+// ================================================================
 // CTA FORM — редирект в Telegram или WhatsApp с готовым текстом заявки
 // ================================================================
 function handleSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('cta-name').value.trim();
   const contact = document.getElementById('cta-contact').value.trim();
-  const message = `Заявка с сайта JAMALDIN\nИмя: ${name}\nКонтакт: ${contact}`;
+  const plan = document.getElementById('cta-plan').value.trim();
+  const message = `Заявка с сайта JAMALDIN\nИмя: ${name}\nКонтакт: ${contact}` + (plan ? `\nТариф: ${plan}` : '');
   const channel = e.submitter ? e.submitter.value : 'telegram';
   const url = channel === 'whatsapp'
     ? `https://wa.me/79289734101?text=${encodeURIComponent(message)}`
